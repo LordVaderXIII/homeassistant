@@ -1,0 +1,113 @@
+sensor.bom_adelaide_cloud:
+  friendly_name: Adelaide Cloud
+  icon: mdi:cloud
+sensor.mes_work:
+  icon: mdi:car
+  name: Work
+sensor.bom_adelaide_rain_today:
+  friendly_name: Adelaide Rain Today
+  icon: mdi:weather-rainy
+sensor.bom_adelaide_relative_humidity:
+  friendly_name: Adelaide Relative Humidity
+  icon: mdi:water-percent
+script.main_tv_on:
+  icon: mdi:television
+script.main_tv_off:
+  icon: mdi:television
+script.aircon_off:
+  icon: mdi:air-conditioner
+script.aircon_cool:
+  icon: mdi:air-conditioner
+script.aircon_hot:
+  icon: mdi:air-conditioner
+sensor.plex:
+  icon: mdi:plex
+switch.lamps:
+  icon: mdi:lamp
+group.bad_login:
+  icon: mdi:login
+sensor.badlogin:
+  friendly_name: Bad Login Attempt
+  icon: mdi:login
+sensor.south_africa:
+  friendly_name: Johannesburg South Africa
+sensor.google_wifi_current_version:
+  friendly_name: Google WiFi current version
+sensor.google_wifi_last_restart:
+  friendly_name: Google WiFi  last restart
+sensor.google_wifi_local_ip:
+  friendly_name: Google WiFi local IP
+sensor.google_wifi_new_version:
+  friendly_name: Google WiFi new version
+sensor.google_wifi_status:
+  friendly_name: Google WiFi status
+sensor.google_wifi_uptime:
+  friendly_name: Google WiFi uptime
+sensor.wifes_work:
+  icon: mdi:car
+group.traveltime:
+  friendly_name: Travel Time
+sensor.me_to_home:
+  icon: mdi:car
+zone.mes_work:
+  friendly_name: me's Work
+  icon: mdi:domain
+zone.church:
+  icon: mdi:church
+zone.wifes_work:
+  friendly_name: wife's Work
+  icon: mdi:domain
+zone.wifesbosss_house:
+  icon: mdi:home-variant
+sensor.wife_to_wifesbosss_house:
+  icon: mdi:car
+sensor.wife_to_home:
+  icon: mdi:car
+sensor.wife_to_work:
+  icon: mdi:car
+sensor.me_to_work:
+  icon: mdi:car
+zone.home:
+  icon: mdi:home
+sensor.bom_adelaide_air_temp_c:
+  friendly_name: Adelaide Air Temp
+sensor.breaches_me_username:
+  friendly_name: my_username
+  icon: mdi:alert
+sensor.breaches_wife_username:
+  friendly_name: wife_username
+  icon: mdi:alert
+sensor.valhalla_h_load_used_space:
+  friendly_name: 'H: Used Space'
+  icon: mdi:harddisk
+sensor.valhalla_c_load_used_space:
+  friendly_name: 'C: Used Space'
+  icon: mdi:harddisk
+sensor.valhalla_e_load_used_space:
+  friendly_name: 'E: Used Space'
+  icon: mdi:harddisk
+sensor.valhalla_g_load_used_space:
+  friendly_name: 'G: Used Space'
+  icon: mdi:harddisk
+sensor.valhalla_f_load_used_space:
+  friendly_name: 'F: Used Space'
+  icon: mdi:harddisk
+sensor.valhalla_r_load_used_space:
+  friendly_name: 'R: Used Space'
+  icon: mdi:harddisk
+sensor.valhalla_generic_memory_load_memory:
+  friendly_name: Memory Load
+  icon: mdi:memory
+sensor.valhalla_gigabyte_ex58ud3r_ite_it8720f_temperatures_cpu:
+  friendly_name: CPU Temperature
+sensor.valhalla_intel_core_i7_920_load_cpu_total:
+  friendly_name: Intel Core i7 920 CPU Load
+  icon: mdi:chip
+sensor.valhalla_nvidia_geforce_9500_gt_temperatures_gpu_core:
+  friendly_name: NVIDIA GeForce 9500 GT GPU Temperature
+  icon: mdi:window-maximize
+media_player.samsung_tv_remote:
+  google_assistant: 'true'
+  google_assistant_name: Samsung TV
+sensor.dark_sky_daily_summary:
+  icon: mdi:white-balance-sunny

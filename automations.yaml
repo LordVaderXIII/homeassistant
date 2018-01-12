@@ -1,0 +1,502 @@
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: wife has arrived at Work
+      title: Location Tracker
+    service: notify.pixel2xl
+  alias: wife at work
+  condition: []
+  id: '1505791890659'
+  trigger:
+  - entity_id: device_tracker.wife_nexus6p
+    event: enter
+    platform: zone
+    zone: zone.wifes_work
+- action:
+  - data:
+      entity_id: switch.lamps
+    service: switch.turn_off
+  alias: Lights left on
+  condition:
+  - condition: state
+    entity_id: switch.lamps
+    state: 'on'
+  id: '1505793025342'
+  trigger:
+  - entity_id: group.devices
+    platform: state
+    to: not_home
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: wife has arrived at Home
+      title: Location Tracker
+    service: notify.pixel2xl
+  - data:
+      entity_id: media_player.bedroom_home
+      message: wife has arrived at home
+    service: tts.google_say
+  alias: wife at Home
+  condition:
+  - after: 09:00:00
+    before: '21:00:00'
+    condition: time
+  id: '1505793266108'
+  trigger:
+  - entity_id: device_tracker.wife_nexus6p
+    event: enter
+    platform: zone
+    zone: zone.home
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: wife has arrived at wifesboss's house
+      title: Location Tracker
+    service: notify.pixel2xl
+  alias: 'wife at wifesboss''s house '
+  condition: []
+  id: '1505858322647'
+  trigger:
+  - entity_id: device_tracker.wife_nexus6p
+    event: enter
+    platform: zone
+    zone: zone.wifesbosss_house
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: There is a new update to Home Assistant
+    service: notify.pixel_2_xl
+  alias: New update Available Join Notification
+  condition: []
+  id: '1505888254111'
+  trigger:
+  - entity_id: updater.updater
+    platform: state
+- action:
+  - data:
+      title: There is a new update to Home Assistant
+    service: persistent_notification.create
+  alias: New Update Persistant Notification
+  condition: []
+  id: '1505888495532'
+  trigger:
+  - entity_id: updater.updater
+    platform: state
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: It will take you {{states.sensor.me_to_home.state}} minutes to
+        get home!
+      title: Travel Time
+    service: notify.pixel2xl
+  alias: Time to home me
+  condition:
+  - condition: zone
+    entity_id: device_tracker.me_me_phone
+    zone: zone.mes_work
+  id: '1505892245400'
+  trigger:
+  - at: '16:40:00'
+    platform: time
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: Bad login attempts are now {{ states.sensor.badlogin.state }}
+      title: Bad Login Attempt
+    service: notify.pixel2xl
+  alias: Notify Bad Login
+  condition: []
+  id: '1506483735352'
+  trigger:
+  - entity_id: binary_sensor.bad_login
+    platform: state
+    to: 'on'
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: Internet Ping has increased to {{states.sensor.speedtest_ping.state}}
+    service: notify.pixel2xl
+  - data:
+      message: Internet Ping has increased to {{states.sensor.speedtest_ping.state}}
+    service: notify.mibox
+  alias: Ping too high
+  condition: []
+  id: '1514260994913'
+  trigger:
+  - above: '100'
+    entity_id: sensor.speedtest_ping
+    platform: numeric_state
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: Internet Download Speed has dropped to {{states.sensor.speedtest_download.state}}MBps
+      title: Speed Test
+    service: notify.pixel2xl
+  - data:
+      message: Internet Download Speed has dropped to {{states.sensor.speedtest_download.state}}MBps
+      title: Speed Test
+    service: notify.mibox
+  alias: Internet Slow
+  condition: []
+  id: '1514293577999'
+  trigger:
+  - below: '20'
+    entity_id: sensor.speedtest_download
+    platform: numeric_state
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: 'One of the Valhalla drives is over 95 percent C: {{states.sensor.valhalla_c_load_used_space.state}},
+        E: {{states.sensor.valhalla_e_load_used_space.state}}, F: {{states.sensor.valhalla_f_load_used_space.state}},
+        G: {{states.sensor.valhalla_g_load_used_space.state}}, H: {{states.sensor.valhalla_h_load_used_space.state}},
+        R: {{states.sensor.valhalla_r_load_used_space.state}}'
+      title: Valhalla Hardware Monitor
+    service: notify.pixel2xl
+  alias: Valhalla Drives Nearly Full
+  condition: []
+  id: '1514354624160'
+  trigger:
+  - above: '95'
+    entity_id: sensor.valhalla_c_load_used_space
+    platform: numeric_state
+  - above: '95'
+    entity_id: sensor.valhalla_e_load_used_space
+    platform: numeric_state
+  - above: '95'
+    entity_id: sensor.valhalla_f_load_used_space
+    platform: numeric_state
+  - above: '95'
+    entity_id: sensor.valhalla_g_load_used_space
+    platform: numeric_state
+  - above: '95'
+    entity_id: sensor.valhalla_h_load_used_space
+    platform: numeric_state
+  - above: '95'
+    entity_id: sensor.valhalla_r_load_used_space
+    platform: numeric_state
+- action:
+  - data:
+      entity_id: media_player.bedroom_home
+      message: Turn off the Lamps, its light outside.
+    service: tts.google_say
+  alias: Bedroom Lamps Notify Google Home
+  condition:
+  - after: sunrise
+    after_offset: 02:00:00
+    before: sunset
+    before_offset: 02:00:00
+    condition: sun
+  id: '1514357374254'
+  trigger:
+  - entity_id: switch.lamps
+    from: 'off'
+    platform: state
+    to: 'on'
+- action:
+  - data:
+      entity_id: media_player.samsung_tv_remote
+    service: media_player.turn_off
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: You left the Bedroom TV on, I have turned it off for you.
+    service: notify.pixel2xl
+  alias: Turn TV off if no one is home
+  condition:
+  - condition: state
+    entity_id: media_player.samsung_tv_remote
+    state: 'on'
+  id: '1514357830900'
+  trigger:
+  - entity_id: group.devices
+    platform: state
+    to: not_home
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: Paul has arrived at Home
+      title: Location Tracker
+    service: notify.pixel2xl
+  alias: Paul home
+  condition: []
+  id: '1514430083845'
+  trigger:
+  - entity_id: device_tracker.homesiphonelan
+    from: away
+    platform: state
+    to: home
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: wife has left work
+    service: notify.pixel2xl
+  alias: wife has Left work
+  condition:
+  - after: '16:00:00'
+    condition: time
+  id: '1514439539683'
+  trigger:
+  - entity_id: device_tracker.wife_nexus6p
+    from: wife's Work
+    platform: state
+    to: not_home
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: my_url.duckdns.org will expire in {{states.sensor.ssl_certificate_expiry.state}}
+        days
+    service: notify.pixel2xl
+  alias: Cert expires in x days
+  condition: []
+  id: '1514466733547'
+  trigger:
+  - below: '3'
+    entity_id: sensor.ssl_certificate_expiry
+    platform: numeric_state
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: my_username has had another breach, it is now at  {{states.sensor.breaches_my_username.state}}
+    service: notify.pixel2xl
+  alias: Haveibeenpawned me
+  condition: []
+  id: '1514495527597'
+  trigger:
+  - entity_id: binary_sensor.breaches_me
+    platform: state
+    to: 'on'
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: The High today is going to be {{states.sensor.dark_sky_daily_high_temperature.state}},
+        The Low today is going to be {{states.sensor.dark_sky_daily_low_temperature.state}}
+        and the forecast is {{states.sensor.dark_sky_hourly_summary.state}}
+      title: Today's Weather Report
+    service: notify.pixel2xl
+  alias: Weather Forcast
+  condition: []
+  id: '1514506405720'
+  trigger:
+  - at: 07:00:00
+    platform: time
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: The Pi CPU temp is  {{states.sensor.cpu_temperature.state}}C
+      title: Pi Hardware Monitor
+    service: notify.pixel2xl
+  alias: Pi CPU temp
+  condition: []
+  id: '1514949863154'
+  trigger:
+  - above: '80'
+    entity_id: sensor.cpu_temperature
+    platform: numeric_state
+- action:
+  - service: shell_command.shutdown_server
+  - data:
+      entity_id: input_select.pcoptions
+      option: None
+    service: input_select.set_options
+  alias: Server Shutdown
+  condition: []
+  id: '1515307300818'
+  trigger:
+  - entity_id: input_select.pcoptions
+    platform: state
+    to: Shutdown
+- action:
+  - service: shell_command.restart_server
+  - data:
+      entity_id: input_select.pcoptions
+      option: None
+    service: input_select.set_options
+  alias: Server Restart
+  condition: []
+  id: '1515307339489'
+  trigger:
+  - entity_id: input_select.pcoptions
+    platform: state
+    to: Restart
+- action:
+  - service: shell_command.hibernate_server
+  - data:
+      entity_id: input_select.pcoptions
+      option: None
+    service: input_select.set_options
+  alias: Server Hibernate
+  condition: []
+  id: '1515307376522'
+  trigger:
+  - entity_id: input_select.pcoptions
+    platform: state
+    to: Hibernate
+- action:
+  - service: shell_command.sleep_server
+  - data:
+      entity_id: input_select.pcoptions
+      option: None
+    service: input_select.set_options
+  alias: Server Sleep
+  condition: []
+  id: '1515307414403'
+  trigger:
+  - entity_id: input_select.pcoptions
+    platform: state
+    to: Sleep
+- action:
+  - data:
+      entity_id: group.pistats
+      visible: 'False'
+    service: group.set_visibility
+  alias: Show Pi Graphs False
+  condition: []
+  id: '1515471238324'
+  trigger:
+  - entity_id: input_select.showpigraph
+    platform: state
+    to: Dont-Show
+- action:
+  - data:
+      entity_id: group.pistats
+      visible: 'True'
+    service: group.set_visibility
+  alias: Show Pi Graph True
+  condition: []
+  id: '1515471367588'
+  trigger:
+  - entity_id: input_select.showpigraph
+    platform: state
+    to: Show
+- action:
+  - data:
+      entity_id: group.valhallastats
+      visible: 'True'
+    service: group.set_visibility
+  alias: Show Valhalla Graph True
+  condition: []
+  id: '1515474286244'
+  trigger:
+  - entity_id: input_select.showvalhallagraph
+    platform: state
+    to: Show
+- action:
+  - data:
+      entity_id: group.valhallastats
+      visible: 'True'
+    service: group.set_visibility
+  alias: Show Valhalla Graph True
+  condition: []
+  id: '1515474288631'
+  trigger:
+  - entity_id: input_select.showvalhallagraph
+    platform: state
+    to: Show
+- action:
+  - data:
+      entity_id: group.valhallastats
+      visible: 'False'
+    service: group.set_visibility
+  alias: Show Valhalla Graph False
+  condition: []
+  id: '1515474341069'
+  trigger:
+  - entity_id: input_select.showvalhallagraph
+    platform: state
+    to: Dont-Show
+- action:
+  - data:
+      entity_id: group.valhallastats
+      visible: 'False'
+    service: group.set_visibility
+  - data:
+      entity_id: group.pistats
+      visible: 'False'
+    service: group.set_visibility
+  alias: Set Graphs to not show on boot
+  condition: []
+  id: '1515474955740'
+  trigger:
+  - event: start
+    platform: homeassistant
+- action:
+  - data:
+      entity_id: group.valhallastats
+      visible: 'False'
+    service: group.set_visibility
+  - data:
+      entity_id: group.pistats
+      visible: 'False'
+    service: group.set_visibility
+  alias: Set Graphs to not show at 3am
+  condition: []
+  id: '1515475200944'
+  trigger:
+  - at: 03:00:00
+    platform: time
+- action:
+  - data:
+      name: dark_theme
+    service: frontend.set_theme
+  alias: Set Theme Sunset
+  condition: []
+  id: '1515628935445'
+  trigger:
+  - event: sunset
+    platform: sun
+- action:
+  - data:
+      name: Backend-selected
+    service: frontend.set_theme
+  alias: Set Theme Sunrise
+  condition: []
+  id: '1515629012090'
+  trigger:
+  - event: sunrise
+    platform: sun
+- action:
+  - data:
+      data:
+        icon: https://goo.gl/xeetdy
+        vibration: 0,65,706,86,657,95,668,100
+      message: Valhalla CPU temp is  {{states.sensor.valhalla_gigabyte_ex58ud3r_ite_it8720f_temperatures_cpu.state}}C
+      title: Valhalla Hardware Monitor
+    service: notify.pixel2xl
+  alias: Valhalla CPU Temp
+  condition: []
+  id: '1515650280177'
+  trigger:
+  - above: '80'
+    entity_id: sensor.valhalla_gigabyte_ex58ud3r_ite_it8720f_temperatures_cpu
+    platform: numeric_state

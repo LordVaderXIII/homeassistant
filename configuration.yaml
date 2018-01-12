@@ -1,0 +1,437 @@
+
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: secret
+  longitude: secret
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 7
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Australia/Adelaide
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+  themes: !include_dir_merge_named themes/
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  api_password: my_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  base_url: https://my-url
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+  ip_ban_enabled: True
+  login_attempts_threshold: 5
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+sensor:
+  - platform: yr
+  - platform: speedtest
+    hour:
+      - 0
+      - 6
+      - 12
+      - 18
+    monitored_conditions:
+      - ping
+      - download
+      - upload
+  - platform: uptime
+  - platform: bom
+    station: IDS60801.94672
+    name: Adelaide
+    monitored_conditions:
+      - apparent_t
+      - cloud
+      - cloud_base_m
+      - cloud_type
+      - gust_kmh
+      - gust_kt
+      - air_temp
+      - dewpt
+      - press
+      - press_qnh
+      - press_msl
+      - press_tend
+      - rain_trace
+      - rel_hum
+      - vis_km
+      - weather
+      - wind_dir
+      - wind_spd_kmh
+      - wind_spd_kt
+  - platform: google_wifi
+    host: 192.168.86.1    
+  - platform: worldclock
+    time_zone: Africa/Johannesburg
+    name: South Africa
+  - platform: worldclock
+    time_zone: Australia/Adelaide
+    name: Adelaide Australia  
+  - platform: lastfm
+    api_key: my_api
+    users:
+      - me
+  - platform: google_travel_time
+    name: me to Work
+    api_key: my_api
+    origin: device_tracker.me_pixel2xl
+    destination: zone.mes_work
+  - platform: google_travel_time
+    name: me to Home
+    api_key: my_api
+    origin: device_tracker.me_pixel2xl
+    destination: zone.home 
+  - platform: google_travel_time
+    name: wife to Work
+    api_key: my_api
+    origin: device_tracker.wife_nexus6p
+    destination: zone.wifes_work
+  - platform: google_travel_time
+    name: wife to wifesboss's House
+    api_key: my_api
+    origin: device_tracker.wife_nexus6p
+    destination: zone.wifesbosss_house
+  - platform: google_travel_time
+    name: wife to Home
+    api_key: my_api
+    origin: device_tracker.wife_nexus6p
+    destination: zone.home 
+  - platform: pi_hole
+    host: 192.168.86.127
+    monitored_conditions:
+      - ads_blocked_today
+      - ads_percentage_today
+      - dns_queries_today
+      - domains_being_blocked
+      - queries_cached
+      - queries_forwarded
+      - unique_clients
+      - unique_domains
+  - platform: pocketcasts
+    username: my_username
+    password: my_password
+  - platform: haveibeenpwned
+    email:
+      - my_username
+      - wife_email
+  - platform: cert_expiry
+    host: my_url.duckdns.org      
+  - platform: cpuspeed
+  - platform: openhardwaremonitor
+    host: 192.168.86.27
+  - platform: deluge
+    host: 192.168.86.27
+    username: me
+    password: my_password
+    monitored_variables:
+      - 'current_status'
+      - 'download_speed'
+      - 'upload_speed'
+  - platform: darksky
+    api_key: my_api
+    monitored_conditions:
+      - summary
+      - nearest_storm_distance
+      - precip_type
+      - precip_intensity
+      - precip_probability
+      - temperature
+      - apparent_temperature
+      - wind_speed
+      - cloud_cover
+      - humidity
+      - visibility
+      - daily_summary
+      - temperature_max
+      - temperature_min
+      - precip_intensity_max
+      - uv_index
+      - hourly_summary
+  - platform: waqi
+    token: my_api
+    locations:
+      - adelaide
+  - platform: sonarr
+    api_key: my_api
+    host: 192.168.86.27
+    monitored_conditions: 
+      - series
+      - upcoming
+      - wanted
+      - queue
+    days: 7
+  - platform: radarr
+    api_key: my_api
+    host: 192.168.86.27
+    port: 5050
+    monitored_conditions:
+      - movies
+      - upcoming
+      - status
+    days: 7
+  - platform: command_line
+    name: badlogin
+    command: grep -c 'Login attempt' /config/home-assistant.log
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: / 
+      - type: memory_use_percent
+      - type: processor_use
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    # If errors occur, remove degree symbol below
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) }}'
+  - platform: statistics
+    entity_id: sensor.valhalla_intel_core_i7_920_load_cpu_total
+    name: Valhalla CPU used
+    max_age:
+      minutes: 1440
+  - platform: statistics
+    entity_id: sensor.valhalla_gigabyte_ex58ud3r_ite_it8720f_temperatures_cpu
+    name: Valhalla CPU Temp
+    max_age:
+      minutes: 1440
+  - platform: statistics
+    entity_id: sensor.cpu_used
+    name: Pi CPU used
+    max_age:
+      minutes: 1440
+  - platform: statistics
+    entity_id: sensor.cpu_temperature
+    name: Pi CPU Temp
+    max_age:
+      minutes: 1440
+  - platform: gearbest
+    currency: AUD
+    items:
+      - id: 341431
+      - id: 310701
+      - id: 268522
+      - id: 967346
+      - id: 659226
+      - id: 393727
+      - id: 659225
+      - id: 664953
+      - id: 229556
+      - id: 229556
+      - id: 644095
+      - id: 440546
+      - id: 344667
+
+      
+#mqtt:
+#  broker: my_url
+#  port: 15503
+#  username: me
+#  password: my_password
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+zone: 
+  - name: Home
+    latitude: secret
+    longitude: secret
+    radius: 200
+  - name: me's Work
+    latitude: secret
+    longitude: secret
+    radius: 200
+  - name: wife's Work
+    latitude: secret
+    longitude: secret
+    radius: 200
+  - name: Church
+    latitude: secret
+    longitude: secret
+    radius: 200
+  - name: wifesboss's House
+    latitude: secret
+    longitude: secret
+    radius: 200
+    
+media_player:
+  - platform: plex 
+  - platform: samsungtv
+    host: 192.168.86.62
+    port: 8001
+    mac: d8:e0:e1:95:07:97
+    
+notify:
+  - platform: joaoapps_join
+    device_id: my_id
+    name: pixel2xl
+    api_key: my_api
+  - platform: nfandroidtv
+    name: MiBox
+    host: 192.168.86.121
+    
+device_tracker:
+  - platform: owntracks
+  - platform: owntracks_http
+  - platform: nmap_tracker
+    hosts: 192.168.86.0/24
+    home_interval: 10
+    consider_home: 900
+    exclude:
+     - 192.168.86.127
+       
+google_assistant:
+  project_id: my_project
+  client_id: my_id
+  access_token: my_token
+  exposed_domains:
+    - switch
+    - script
+
+camera:
+  name: me
+  platform: generic
+  still_image_url: "https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.me_pixel2xl.attributes.latitude }},{{ states.device_tracker.me_pixel2xl.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.me_pixel2xl.attributes.latitude }},{{ states.device_tracker.me_pixel2xl.attributes.longitude }}"
+  limit_refetch_to_url_change: true
+
+
+camera 2:
+  name: wife
+  platform: generic
+  still_image_url: "https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.wife_nexus6p.attributes.latitude }},{{ states.device_tracker.wife_nexus6p.attributes.longitude}}&zoom=13&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.wife_nexus6p.attributes.latitude }},{{ states.device_tracker.wife_nexus6p.attributes.longitude }}"
+  limit_refetch_to_url_change: true
+
+#splunk:
+#  token: my_token
+#  host: 192.168.86.27
+#  port: 8088
+  
+binary_sensor:
+  - platform: trend
+    sensors:
+      breaches_me:
+        entity_id: sensor.breaches_me
+      bad_login:
+        entity_id: sensor.badlogin
+
+history_graph:
+  gr1:
+    name: Speed Test
+    entities:
+      - sensor.speedtest_ping
+      - sensor.speedtest_download
+      - sensor.speedtest_upload
+    hours_to_show: 120
+    refresh: 3600
+  gr2:
+    name: Pi Stats
+    entities:
+      - sensor.cpu_temperature
+      - sensor.cpu_used
+      - sensor.ram_used
+      - sensor.disk_used_
+    hours_to_show: 36
+    refresh: 300
+  gr3:
+    name: Valhalla Stats
+    entities:
+      - sensor.valhalla_intel_core_i7_920_load_cpu_total
+      - sensor.valhalla_gigabyte_ex58ud3r_ite_it8720f_temperatures_cpu
+      - sensor.valhalla_generic_memory_load_memory
+    hours_to_show: 36
+    refresh: 300 
+  gr4:
+    name: Pi-Hole
+    entities:
+      - sensor.pihole_ads_blocked_today
+      - sensor.pihole_ads_percentage_blocked_today
+      - sensor.pihole_dns_queries_today
+    hours_to_show: 36
+    refresh: 600
+
+
+input_select:
+  pcoptions:
+    name: PC Power Options
+    options:
+      - Restart
+      - Shutdown
+      - None
+      - Sleep
+      - Hibernate
+    initial: None
+    icon: mdi:desktop-tower
+  showpigraph:
+    name: Show Pi Graphs
+    options:
+      - Show
+      - Dont-Show
+    initial: Dont-Show
+    icon: mdi:chart-line
+  showvalhallagraph:
+    name: Show Valhalla Graphs
+    options:
+      - Show
+      - Dont-Show
+    initial: Dont-Show
+    icon: mdi:chart-line
+
+shell_command:
+  shutdown_server: 'curl -k http://192.168.86.27:8001/?action=System.Shutdown'
+  restart_server: 'curl -k http://192.168.86.27:8001/?action=System.Restart'
+  sleep_server: 'curl -k http://192.168.86.27:8001/?action=System.Sleep'
+  hibernate_server: 'curl -k http://192.168.86.27:8001/?action=System.Hibernate'
+
+switch:
+  - platform: wake_on_lan
+    mac_address: "00-24-1D-75-98-1C"
+    name: WOL Valhalla
+
+recorder:
+  db_url: mysql://hass:db_password@core-mariadb/homeassistant
